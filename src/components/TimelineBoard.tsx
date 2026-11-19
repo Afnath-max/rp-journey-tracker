@@ -71,7 +71,7 @@ export const TimelineBoard: React.FC = () => {
   const progressPercent = Math.round((completedMilestones.length / MILESTONES.length) * 100);
 
   return (
-    <div className="w-full flex flex-col items-center min-h-screen bg-black text-neutral-100 selection:bg-yellow-400 selection:text-black">
+    <div className="w-full flex flex-col items-center min-h-screen bg-transparent text-neutral-100 selection:bg-yellow-400 selection:text-black">
       {/* Top Banner Header */}
       <header className="w-full max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
         <motion.div
@@ -109,7 +109,7 @@ export const TimelineBoard: React.FC = () => {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="mt-6 rounded-2xl bg-neutral-950 border-2 border-yellow-500/50 p-4 shadow-[0_0_30px_rgba(234,179,8,0.15)] text-center text-white relative overflow-hidden"
+          className="mt-6 rounded-2xl bg-neutral-950/80 backdrop-blur-md border-2 border-yellow-500/50 p-4 shadow-[0_0_30px_rgba(234,179,8,0.15)] text-center text-white relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-500/10 via-transparent to-transparent pointer-events-none" />
           <div className="relative z-10 flex items-center justify-center gap-2.5">
@@ -134,7 +134,7 @@ export const TimelineBoard: React.FC = () => {
         </motion.div>
 
         {/* Progress Tracker Card */}
-        <div className="mt-5 bg-neutral-950 p-4 rounded-2xl border border-neutral-800 shadow-xl flex items-center gap-4">
+        <div className="mt-5 bg-neutral-950/80 backdrop-blur-md p-4 rounded-2xl border border-neutral-800 shadow-xl flex items-center gap-4">
           <div className="flex-1 text-left">
             <div className="flex justify-between text-xs font-semibold text-neutral-400 mb-1.5">
               <span>Overall Milestone Progress</span>
@@ -206,7 +206,7 @@ export const TimelineBoard: React.FC = () => {
                       transition={{ duration: 0.4, delay: 0.05 }}
                       whileHover={{ scale: 1.02 }}
                       onClick={() => setSelectedMilestone(m)}
-                      className={`group cursor-pointer p-5 rounded-2xl bg-neutral-950 border-2 transition-all duration-300 relative shadow-xl ${
+                      className={`group cursor-pointer p-5 rounded-2xl bg-neutral-950/85 backdrop-blur-md border-2 transition-all duration-300 relative shadow-xl ${
                         isCompleted
                           ? 'border-yellow-500/70 shadow-[0_0_20px_rgba(234,179,8,0.2)]'
                           : isUrgent
