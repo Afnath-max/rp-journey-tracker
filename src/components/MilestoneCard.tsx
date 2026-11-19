@@ -2,22 +2,27 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Milestone } from '@/data/timelineData';
-import { Check, Sparkles, ChevronRight, Clock } from 'lucide-react';
+import { Milestone, MilestoneComputedStatus } from '@/data/timelineData';
+import { Check, ChevronRight, Clock, AlertTriangle, CalendarDays } from 'lucide-react';
 
 interface MilestoneCardProps {
   milestone: Milestone;
-  isCompleted: boolean;
+  statusInfo: { status: MilestoneComputedStatus; daysDiff: number; label: string };
   onSelect: () => void;
   index: number;
 }
 
 export const MilestoneCard: React.FC<MilestoneCardProps> = ({
   milestone,
-  isCompleted,
+  statusInfo,
   onSelect,
   index,
 }) => {
+  const { status, label } = statusInfo;
+  const isCompleted = status === 'completed';
+  const isUrgent = status === 'urgent';
+  const isOverdue = status === 'overdue';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: milestone.position === 'top' ? -20 : 20 }}
@@ -28,13 +33,19 @@ export const MilestoneCard: React.FC<MilestoneCardProps> = ({
       className={`group cursor-pointer w-48 sm:w-52 p-3.5 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md shadow-lg transition-all duration-300 relative border-2 ${
         isCompleted
           ? 'border-emerald-500 shadow-emerald-500/10'
+          : isUrgent
+          ? 'border-rose-500 shadow-rose-500/20'
+          : isOverdue
+          ? 'border-amber-500/80 shadow-amber-500/10'
           : 'border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500'
       }`}
       style={{
-        boxShadow: `0 8px 24px -6px ${milestone.color}25`
+        boxShadow: isUrgent
+          ? `0 0 20px -3px ${milestone.color}50`
+          : `0 8px 24px -6px ${milestone.color}25`,
       }}
     >
-      {/* Target Marker Accent Pill on Top */}
+      {/* Header Pill & Dynamic Countdown Status */}
       <div className="flex items-center justify-between gap-1 mb-2">
         <span
           className="text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md border"
@@ -48,14 +59,22 @@ export const MilestoneCard: React.FC<MilestoneCardProps> = ({
         </span>
 
         {isCompleted ? (
-          <span className="flex items-center justify-center h-5 w-5 rounded-full bg-emerald-500 text-white shadow-sm">
-            <Check size={12} strokeWidth={3} />
+          <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded-full">
+            <Check size={10} strokeWidth={3} /> Done
           </span>
-        ) : milestone.deadlineStatus === 'urgent' ? (
-          <span className="flex items-center gap-1 text-[10px] font-bold text-rose-500 bg-rose-500/10 border border-rose-500/30 px-1.5 py-0.5 rounded-full animate-pulse">
-            <Clock size={10} /> Target
+        ) : isUrgent ? (
+          <span className="flex items-center gap-1 text-[10px] font-bold text-rose-500 bg-rose-500/10 border border-rose-500/40 px-1.5 py-0.5 rounded-full animate-pulse">
+            <Clock size={10} /> {label}
           </span>
-        ) : null}
+        ) : isOverdue ? (
+          <span className="flex items-center gap-1 text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/40 px-1.5 py-0.5 rounded-full">
+            <AlertTriangle size={10} /> {label}
+          </span>
+        ) : (
+          <span className="flex items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded-full">
+            <CalendarDays size={10} /> {label}
+          </span>
+        )}
       </div>
 
       {/* Title */}

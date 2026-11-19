@@ -1,18 +1,26 @@
+export type MilestoneCategory =
+  | 'awareness'
+  | 'workshop'
+  | 'supervisor'
+  | 'taf'
+  | 'charter'
+  | 'proposal'
+  | 'progress';
+
 export interface Milestone {
   id: string;
   date: string;
   title: string;
-  category: 'awareness' | 'workshop' | 'supervisor' | 'taf' | 'charter' | 'proposal' | 'progress';
+  category: MilestoneCategory;
   position: 'top' | 'bottom';
-  color: string; // Tailwind border/badge accent color
+  color: string;
   badgeBg: string;
   dotColor: string;
   shortDescription: string;
   detailedRequirements: string[];
   tips: string[];
-  deadlineStatus: 'completed' | 'urgent' | 'upcoming';
-  isoDate: string; // for countdown/sorting
-  annotation?: string; // handwritten notes like "(4)", "mid term", "600-2000 words"
+  isoDate: string; // End deadline: YYYY-MM-DD
+  annotation?: string;
 }
 
 export const MILESTONES: Milestone[] = [
@@ -35,13 +43,12 @@ export const MILESTONES: Milestone[] = [
       'Form team early — the strongest teams do not wait for the semester to begin!',
       'Review previous years research publications and project repositories.'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2026-09-30',
     annotation: 'Group scout & orientation'
   },
   {
     id: 'm2',
-    date: '11 & 18 Oct',
+    date: '11 & 18 Oct 2026',
     title: 'Design Thinking Workshop',
     category: 'workshop',
     position: 'bottom',
@@ -58,13 +65,12 @@ export const MILESTONES: Milestone[] = [
       'Ensure the problem is real and backed by peer-reviewed literature.',
       'Differentiate between an engineering solution vs. a research contribution.'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2026-10-18',
     annotation: 'G1 / 400-2000 words synthesis'
   },
   {
     id: 'm3',
-    date: '30 Oct',
+    date: '30 Oct 2026',
     title: 'Supervisor Confirmation',
     category: 'supervisor',
     position: 'top',
@@ -81,13 +87,12 @@ export const MILESTONES: Milestone[] = [
       'Reach out early with a 1-page proposal summary and recent paper references.',
       'Popular supervisors get booked out quickly!'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2026-10-30',
     annotation: 'Crucial: 4 members lock-in'
   },
   {
     id: 'm4',
-    date: '10 Dec',
+    date: '10 Dec 2026',
     title: 'TAF Submission',
     category: 'taf',
     position: 'bottom',
@@ -104,13 +109,12 @@ export const MILESTONES: Milestone[] = [
       'Immediate milestone target! Do not wait for the semester to begin.',
       'Make sure each individual scope is balanced and academically sound.'
     ],
-    deadlineStatus: 'urgent',
     isoDate: '2026-12-10',
     annotation: 'Immediate Target before Jan'
   },
   {
     id: 'm5',
-    date: '14–16 Dec',
+    date: '14–16 Dec 2026',
     title: 'TAF Evaluation',
     category: 'taf',
     position: 'top',
@@ -127,7 +131,6 @@ export const MILESTONES: Milestone[] = [
       'Be prepared to justify why your project is research and not just standard web/mobile dev.',
       'Prepare crisp 5-minute explanation per member.'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2026-12-16',
     annotation: 'Panel Defense & Approval'
   },
@@ -150,13 +153,12 @@ export const MILESTONES: Milestone[] = [
       'Use this charter as your team guide throughout the entire year.',
       'Establish clear team communication protocols and git workflow.'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2027-01-04',
     annotation: 'Formal Project Baseline'
   },
   {
     id: 'm7',
-    date: '04–08 Mar',
+    date: '04–08 Mar 2027',
     title: 'Proposal Presentation',
     category: 'proposal',
     position: 'top',
@@ -173,13 +175,12 @@ export const MILESTONES: Milestone[] = [
       'Practice slide transitions as a group with strict timing.',
       'Anticipate critical questions about your baseline dataset and evaluation metrics.'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2027-03-08',
     annotation: 'Mid-term Presentation Viva'
   },
   {
     id: 'm8',
-    date: '15 Mar',
+    date: '15 Mar 2027',
     title: 'Proposal Report',
     category: 'proposal',
     position: 'bottom',
@@ -196,13 +197,12 @@ export const MILESTONES: Milestone[] = [
       'Run Turnitin plagiarism checks in advance (keep similarity index strictly below threshold).',
       'Have supervisor review drafts at least 1 week before submission.'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2027-03-15',
     annotation: 'Full Written Documentation'
   },
   {
     id: 'm9',
-    date: '29 Apr–03 May',
+    date: '29 Apr–03 May 2027',
     title: 'Progress Presentation 1',
     category: 'progress',
     position: 'top',
@@ -219,8 +219,38 @@ export const MILESTONES: Milestone[] = [
       'Live demos carry much more weight than static screenshots.',
       'Highlight individual member progress distinctly.'
     ],
-    deadlineStatus: 'upcoming',
     isoDate: '2027-05-03',
     annotation: '40-50% Working Implementation'
   }
 ];
+
+export type MilestoneComputedStatus = 'completed' | 'urgent' | 'upcoming' | 'overdue';
+
+export function getMilestoneStatus(
+  milestone: Milestone,
+  completedIds: string[],
+  nextActiveId: string | null,
+  currentTimestamp: number | null
+): { status: MilestoneComputedStatus; daysDiff: number; label: string } {
+  if (completedIds.includes(milestone.id)) {
+    return { status: 'completed', daysDiff: 0, label: 'Completed' };
+  }
+
+  if (currentTimestamp === null) {
+    return { status: 'upcoming', daysDiff: 0, label: 'Pending' };
+  }
+
+  const deadline = new Date(milestone.isoDate + 'T23:59:59').getTime();
+  const diffTime = deadline - currentTimestamp;
+  const daysDiff = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (daysDiff < 0) {
+    return { status: 'overdue', daysDiff, label: `${Math.abs(daysDiff)}d Overdue` };
+  }
+
+  if (milestone.id === nextActiveId) {
+    return { status: 'urgent', daysDiff, label: daysDiff === 0 ? 'Due Today' : `${daysDiff}d Left` };
+  }
+
+  return { status: 'upcoming', daysDiff, label: `${daysDiff}d to go` };
+}

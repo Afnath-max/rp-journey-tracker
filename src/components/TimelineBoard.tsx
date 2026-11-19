@@ -2,19 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MILESTONES, Milestone } from '@/data/timelineData';
+import { MILESTONES, Milestone, getMilestoneStatus } from '@/data/timelineData';
 import { MilestoneCard } from './MilestoneCard';
 import { MilestoneModal } from './MilestoneModal';
-import { Target, Sparkles, CheckCircle, Clock, BookOpen, Users, Compass, Award } from 'lucide-react';
+import { Target, CheckCircle, Award } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const TimelineBoard: React.FC = () => {
   const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null);
   const [completedMilestones, setCompletedMilestones] = useState<string[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const [currentTimestamp, setCurrentTimestamp] = useState<number | null>(null);
 
   useEffect(() => {
-    setMounted(true);
+    setCurrentTimestamp(Date.now());
     const saved = localStorage.getItem('rp_completed_milestones');
     if (saved) {
       try {
@@ -45,6 +45,19 @@ export const TimelineBoard: React.FC = () => {
     localStorage.setItem('rp_completed_milestones', JSON.stringify(updated));
   };
 
+  // Determine the next active (incomplete) milestone dynamically
+  const nextActiveMilestone =
+    currentTimestamp !== null
+      ? MILESTONES.find((m) => {
+          if (completedMilestones.includes(m.id)) return false;
+          const d = new Date(m.isoDate + 'T23:59:59').getTime();
+          return d >= currentTimestamp;
+        }) ||
+        MILESTONES.find((m) => !completedMilestones.includes(m.id)) ||
+        null
+      : null;
+
+  const nextActiveId = nextActiveMilestone ? nextActiveMilestone.id : null;
   const progressPercent = Math.round((completedMilestones.length / MILESTONES.length) * 100);
 
   return (
@@ -119,7 +132,14 @@ export const TimelineBoard: React.FC = () => {
           {/* Timeline Nodes Grid */}
           <div className="relative z-10 grid grid-cols-9 gap-4 items-center">
             {MILESTONES.map((m, idx) => {
-              const isCompleted = completedMilestones.includes(m.id);
+              const statusInfo = getMilestoneStatus(
+                m,
+                completedMilestones,
+                nextActiveId,
+                currentTimestamp
+              );
+              const isCompleted = statusInfo.status === 'completed';
+              const isUrgent = statusInfo.status === 'urgent';
               const isTop = m.position === 'top';
 
               return (
@@ -129,7 +149,7 @@ export const TimelineBoard: React.FC = () => {
                     <div className="absolute bottom-8 mb-4 flex flex-col items-center">
                       <MilestoneCard
                         milestone={m}
-                        isCompleted={isCompleted}
+                        statusInfo={statusInfo}
                         onSelect={() => setSelectedMilestone(m)}
                         index={idx}
                       />
@@ -149,10 +169,10 @@ export const TimelineBoard: React.FC = () => {
                     className="relative group focus:outline-none"
                     aria-label={m.title}
                   >
-                    {/* Ring highlight on pulse */}
-                    {m.deadlineStatus === 'urgent' && (
+                    {/* Professional glowing radar pulse ONLY for the active priority target */}
+                    {isUrgent && (
                       <span
-                        className="absolute -inset-2 rounded-full animate-ping opacity-50"
+                        className="absolute -inset-2.5 rounded-full animate-ping opacity-60"
                         style={{ backgroundColor: m.color }}
                       />
                     )}
@@ -184,7 +204,7 @@ export const TimelineBoard: React.FC = () => {
                       />
                       <MilestoneCard
                         milestone={m}
-                        isCompleted={isCompleted}
+                        statusInfo={statusInfo}
                         onSelect={() => setSelectedMilestone(m)}
                         index={idx}
                       />
@@ -197,7 +217,7 @@ export const TimelineBoard: React.FC = () => {
         </div>
       </section>
 
-      {/* Immediate Target Callout Box (Exactly like in the uploaded graphic) */}
+      {/* Immediate Target Callout Box */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -211,39 +231,64 @@ export const TimelineBoard: React.FC = () => {
               <Target size={18} />
             </span>
             <p className="text-base sm:text-lg font-bold tracking-wide">
-              Your immediate target:{' '}
-              <span className="text-amber-300 font-extrabold underline decoration-amber-400/60 decoration-2 underline-offset-4">
-                group + supervisor + topic + TAF before January
-              </span>
+              {nextActiveMilestone ? (
+                <>
+                  Current Active Focus:{' '}
+                  <span className="text-amber-300 font-extrabold underline decoration-amber-400/60 decoration-2 underline-offset-4">
+                    {nextActiveMilestone.title} ({nextActiveMilestone.date})
+                  </span>
+                </>
+              ) : (
+                <span className="text-emerald-400 font-extrabold">
+                  🎉 Congratulations! All milestones completed!
+                </span>
+              )}
             </p>
           </div>
         </div>
       </motion.div>
 
-      {/* Mobile-Friendly Vertical Timeline fallback for smaller screens */}
+      {/* Mobile-Friendly Vertical Timeline fallback */}
       <div className="w-full max-w-md mx-auto px-4 sm:hidden mb-12">
         <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 text-center mb-6">
           Vertical List View
         </h3>
         <div className="relative pl-6 border-l-2 border-slate-700/60 space-y-6">
           {MILESTONES.map((m) => {
-            const isCompleted = completedMilestones.includes(m.id);
+            const statusInfo = getMilestoneStatus(
+              m,
+              completedMilestones,
+              nextActiveId,
+              currentTimestamp
+            );
+            const isCompleted = statusInfo.status === 'completed';
+            const isUrgent = statusInfo.status === 'urgent';
             return (
               <div key={m.id} className="relative cursor-pointer" onClick={() => setSelectedMilestone(m)}>
                 <span
                   className="absolute -left-[31px] top-1.5 h-4 w-4 rounded-full border-2 border-slate-900"
                   style={{ backgroundColor: isCompleted ? '#10b981' : m.color }}
                 />
-                <div className="p-3 bg-slate-900/90 border border-slate-800 rounded-xl">
+                <div
+                  className={`p-3 bg-slate-900/90 border rounded-xl ${
+                    isUrgent ? 'border-rose-500/80' : 'border-slate-800'
+                  }`}
+                >
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-bold" style={{ color: m.color }}>
                       {m.date}
                     </span>
-                    {m.deadlineStatus === 'urgent' && (
-                      <span className="text-[10px] text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded">
-                        Target
-                      </span>
-                    )}
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded ${
+                        isCompleted
+                          ? 'text-emerald-400 bg-emerald-500/10'
+                          : isUrgent
+                          ? 'text-rose-400 bg-rose-500/10 font-bold'
+                          : 'text-slate-400 bg-slate-800'
+                      }`}
+                    >
+                      {statusInfo.label}
+                    </span>
                   </div>
                   <h4 className="text-sm font-bold text-white">{m.title}</h4>
                   {m.annotation && (
