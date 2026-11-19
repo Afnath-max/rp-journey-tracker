@@ -1,5 +1,16 @@
-import { TimelineBoard } from '@/components/TimelineBoard';
-import { HexagonBackground } from '@/components/HexagonBackground';
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const TimelineBoard = dynamic(
+  () => import('@/components/TimelineBoard').then((mod) => mod.TimelineBoard),
+  { ssr: false }
+);
+
+const HexagonBackground = dynamic(
+  () => import('@/components/HexagonBackground').then((mod) => mod.HexagonBackground),
+  { ssr: false }
+);
 
 export default function Home() {
   return (
