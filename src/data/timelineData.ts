@@ -1,0 +1,237 @@
+export type MilestoneCategory =
+  | 'awareness'
+  | 'workshop'
+  | 'supervisor'
+  | 'taf'
+  | 'charter'
+  | 'proposal'
+  | 'progress';
+
+export interface Milestone {
+  id: string;
+  date: string;
+  title: string;
+  category: MilestoneCategory;
+  position: 'top' | 'bottom';
+  color: string;
+  shortDescription: string;
+  detailedRequirements: string[];
+  tips: string[];
+  isoDate: string; // YYYY-MM-DD
+  annotation?: string;
+}
+
+// Professional Bumblebee Palette (Deep Carbon/Onyx base + Vibrant Electric Amber/Yellow & Gold Accents)
+export const MILESTONES: Milestone[] = [
+  {
+    id: 'm1',
+    date: '30 Sep 2026',
+    title: 'RP Awareness Session',
+    category: 'awareness',
+    position: 'top',
+    color: '#eab308', // pure bumblebee yellow
+    shortDescription: 'Introductory orientation on research project scope, faculty expectations, and team requirements.',
+    detailedRequirements: [
+      'Understand project guidelines and marking schemes (IT4010 Research Project).',
+      'Begin scouting prospective group members (groups of 4).',
+      'Brainstorm preliminary domains: AI/ML, Cloud/DevOps, Cybersec, IoT, or Software Engineering.'
+    ],
+    tips: [
+      'Form team early — the strongest teams do not wait for the semester to begin!',
+      'Review previous years research publications and project repositories.'
+    ],
+    isoDate: '2026-09-30',
+    annotation: 'Group scout & orientation'
+  },
+  {
+    id: 'm2',
+    date: '11 & 18 Oct 2026',
+    title: 'Design Thinking Workshop',
+    category: 'workshop',
+    position: 'bottom',
+    color: '#facc15', // bright yellow
+    shortDescription: 'Hands-on workshops to identify problem spaces, empathy mapping, and user need validation.',
+    detailedRequirements: [
+      'Attend both Workshop Sessions (11 Oct & 18 Oct).',
+      'Frame a validated, impactful research problem statement.',
+      'Produce initial problem definition drafts (approx. 400 - 2000 words background synthesis).'
+    ],
+    tips: [
+      'Ensure the problem is real and backed by peer-reviewed literature.',
+      'Differentiate between an engineering solution vs. a research contribution.'
+    ],
+    isoDate: '2026-10-18',
+    annotation: 'G1 / 400-2000 words synthesis'
+  },
+  {
+    id: 'm3',
+    date: '20 Nov 2026',
+    title: 'Supervisor Confirmation',
+    category: 'supervisor',
+    position: 'top',
+    color: '#fbbf24', // golden yellow
+    shortDescription: 'Formal agreement and sign-off from an academic supervisor and co-supervisor.',
+    detailedRequirements: [
+      'Pitch research topic and novelty slides to potential faculty supervisors.',
+      'Obtain written acceptance from Supervisor and Co-supervisor.',
+      'Solidify 4-member group commitments and allocation of individual research components.'
+    ],
+    tips: [
+      'Reach out early with a 1-page proposal summary and recent paper references.',
+      'Popular supervisors get booked out quickly!'
+    ],
+    isoDate: '2026-11-20',
+    annotation: 'Crucial: 4 members lock-in'
+  },
+  {
+    id: 'm4',
+    date: '10 Dec 2026',
+    title: 'TAF Submission',
+    category: 'taf',
+    position: 'bottom',
+    color: '#f59e0b', // deep amber bee stripe
+    shortDescription: 'Topic Assessment Form (TAF) formal document submission to the department committee.',
+    detailedRequirements: [
+      'Finalize Title, Objectives, Problem Statement, and Proposed Methodology.',
+      'Detail individual contributions for each of the 4 team members.',
+      'Collect supervisor endorsements and upload before deadline.'
+    ],
+    tips: [
+      'Immediate milestone target! Do not wait for the semester to begin.',
+      'Make sure each individual scope is balanced and academically sound.'
+    ],
+    isoDate: '2026-12-10',
+    annotation: 'Immediate Target before Jan'
+  },
+  {
+    id: 'm5',
+    date: '14–16 Dec 2026',
+    title: 'TAF Evaluation',
+    category: 'taf',
+    position: 'top',
+    color: '#fde047', // vivid yellow
+    shortDescription: 'Review and oral defense/screening of the submitted TAF with the evaluation panel.',
+    detailedRequirements: [
+      'Defend research novelty, feasibility, and technical depth before faculty panel.',
+      'Receive approval status (Accepted / Revisions required / Resubmit).',
+      'Integrate reviewer comments immediately.'
+    ],
+    tips: [
+      'Be prepared to justify why your project is research and not just standard web/mobile dev.',
+      'Prepare crisp 5-minute explanation per member.'
+    ],
+    isoDate: '2026-12-16',
+    annotation: 'Panel Defense & Approval'
+  },
+  {
+    id: 'm6',
+    date: '04 Jan 2027',
+    title: 'Project Charter',
+    category: 'charter',
+    position: 'bottom',
+    color: '#eab308', // metallic gold yellow
+    shortDescription: 'Comprehensive contractual charter outlining scope, milestones, Gantt chart, and risk plan.',
+    detailedRequirements: [
+      'Complete SLIIT IT4010 Project Charter document.',
+      'Define detailed timeline, milestones, sprint deliverables, and resource requirements.',
+      'Finalize signed agreement between group and supervisors.'
+    ],
+    tips: [
+      'Use this charter as your team guide throughout the entire year.',
+      'Establish clear team communication protocols and git workflow.'
+    ],
+    isoDate: '2027-01-04',
+    annotation: 'Formal Project Baseline'
+  },
+  {
+    id: 'm7',
+    date: '04–08 Mar 2027',
+    title: 'Proposal Presentation',
+    category: 'proposal',
+    position: 'top',
+    color: '#facc15', // honey yellow
+    shortDescription: 'Formal mid-term proposal viva and presentation evaluated by examiner panel.',
+    detailedRequirements: [
+      'Comprehensive 15-20 min presentation detailing problem, literature review, and architecture.',
+      'Demo preliminary feasibility proofs, datasets, or mockups.',
+      'Answer rigorous questions on methodology and individual contributions.'
+    ],
+    tips: [
+      'Practice slide transitions as a group with strict timing.',
+      'Anticipate critical questions about your baseline dataset and evaluation metrics.'
+    ],
+    isoDate: '2027-03-08',
+    annotation: 'Mid-term Presentation Viva'
+  },
+  {
+    id: 'm8',
+    date: '15 Mar 2027',
+    title: 'Proposal Report',
+    category: 'proposal',
+    position: 'bottom',
+    color: '#fbbf24', // warm gold
+    shortDescription: 'Submission of the thorough Research Proposal documentation with IEEE citations.',
+    detailedRequirements: [
+      'Submit individual and group chapters following IEEE standard formatting.',
+      'Include comprehensive Literature Review (20+ high impact IEEE/Springer papers).',
+      'System Architecture, Requirements, and Detailed Methodology chapters.'
+    ],
+    tips: [
+      'Run Turnitin plagiarism checks in advance (keep similarity index strictly below threshold).',
+      'Have supervisor review drafts at least 1 week before submission.'
+    ],
+    isoDate: '2027-03-15',
+    annotation: 'Full Written Documentation'
+  },
+  {
+    id: 'm9',
+    date: '29 Apr–03 May 2027',
+    title: 'Progress Presentation 1',
+    category: 'progress',
+    position: 'top',
+    color: '#fef08a', // bright electric yellow
+    shortDescription: 'First core milestone presentation showcasing 40-50% actual implementation & findings.',
+    detailedRequirements: [
+      'Demonstrate working code / core models / functional components.',
+      'Present preliminary evaluation results and performance metrics.',
+      'Show evidence of regular supervisor meetings (logbook verification).'
+    ],
+    tips: [
+      'Live demos carry much more weight than static screenshots.',
+      'Highlight individual member progress distinctly.'
+    ],
+    isoDate: '2027-05-03',
+    annotation: '40-50% Working Implementation'
+  }
+];
+
+export type MilestoneComputedStatus = 'completed' | 'urgent' | 'upcoming' | 'overdue';
+
+export function getMilestoneStatus(
+  milestone: Milestone,
+  completedIds: string[],
+  nextActiveId: string | null,
+  currentTimestamp: number | null
+): { status: MilestoneComputedStatus; daysDiff: number; label: string } {
+  if (completedIds.includes(milestone.id)) {
+    return { status: 'completed', daysDiff: 0, label: 'Completed' };
+  }
+
+  if (currentTimestamp === null) {
+    return { status: 'upcoming', daysDiff: 0, label: 'Pending' };
+  }
+
+  const deadline = new Date(milestone.isoDate + 'T23:59:59').getTime();
+  const diffTime = deadline - currentTimestamp;
+  const daysDiff = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (daysDiff < 0) {
+    return { status: 'overdue', daysDiff, label: `${Math.abs(daysDiff)}d Overdue` };
+  }
+
+  if (milestone.id === nextActiveId) {
+    return { status: 'urgent', daysDiff, label: daysDiff === 0 ? 'Due Today' : `${daysDiff}d Left` };
+  }
+
+  return { status: 'upcoming', daysDiff, label: `${daysDiff}d to go` };
+}
