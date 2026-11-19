@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { MILESTONES, Milestone, getMilestoneStatus } from '@/data/timelineData';
 import { MilestoneCard } from './MilestoneCard';
 import { MilestoneModal } from './MilestoneModal';
-import { Target, CheckCircle, Award } from 'lucide-react';
+import { Target, CheckCircle, Award, MoveHorizontal } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const TimelineBoard: React.FC = () => {
@@ -61,13 +61,13 @@ export const TimelineBoard: React.FC = () => {
   const progressPercent = Math.round((completedMilestones.length / MILESTONES.length) * 100);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center min-h-screen">
       {/* Top Banner (Header section matching the original image) */}
-      <header className="w-full text-center max-w-5xl mx-auto px-4 pt-6 pb-4">
+      <header className="w-full text-center max-w-5xl mx-auto px-4 pt-8 pb-3">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2.5"
         >
           <Award size={14} />
           IT4010 Research Project • Faculty of Computing
@@ -85,8 +85,8 @@ export const TimelineBoard: React.FC = () => {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mt-2 text-base sm:text-lg text-slate-600 dark:text-slate-300 font-medium"
+          transition={{ delay: 0.15 }}
+          className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-300 font-medium"
         >
           Start before January —{' '}
           <span className="font-bold text-slate-900 dark:text-amber-300">
@@ -95,7 +95,7 @@ export const TimelineBoard: React.FC = () => {
         </motion.p>
 
         {/* Progress Bar & Quick Stats */}
-        <div className="mt-6 max-w-md mx-auto bg-slate-100 dark:bg-slate-900/80 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+        <div className="mt-4 max-w-md mx-auto bg-slate-100 dark:bg-slate-900/80 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
           <div className="flex-1 text-left">
             <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">
               <span>Overall RP Progress</span>
@@ -114,13 +114,19 @@ export const TimelineBoard: React.FC = () => {
             <div>Done</div>
           </div>
         </div>
+
+        {/* Scroll hint on desktop */}
+        <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+          <MoveHorizontal size={14} />
+          <span>Scroll horizontally to view the full journey</span>
+        </div>
       </header>
 
-      {/* Main Timeline Section (Desktop Horizontal + Scrollable) */}
-      <section className="w-full mt-6 mb-8 px-4 sm:px-6 overflow-x-auto pb-8 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-        <div className="min-w-[1280px] max-w-7xl mx-auto relative pt-36 pb-36">
+      {/* Main Timeline Section (Desktop Horizontal + Generous Top/Bottom Padding so cards are NEVER clipped) */}
+      <section className="w-full px-4 sm:px-8 overflow-x-auto overflow-y-visible py-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+        <div className="min-w-[1500px] max-w-[1700px] mx-auto relative h-[560px] flex items-center justify-center">
           {/* Main Central Timeline Axis */}
-          <div className="absolute top-1/2 left-4 right-4 -translate-y-1/2 h-1 bg-slate-200 dark:bg-slate-700/80 z-0 rounded-full">
+          <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1.5 bg-slate-200 dark:bg-slate-700/80 z-0 rounded-full">
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
@@ -130,7 +136,7 @@ export const TimelineBoard: React.FC = () => {
           </div>
 
           {/* Timeline Nodes Grid */}
-          <div className="relative z-10 grid grid-cols-9 gap-4 items-center">
+          <div className="relative z-10 w-full grid grid-cols-9 gap-4 items-center">
             {MILESTONES.map((m, idx) => {
               const statusInfo = getMilestoneStatus(
                 m,
@@ -143,10 +149,10 @@ export const TimelineBoard: React.FC = () => {
               const isTop = m.position === 'top';
 
               return (
-                <div key={m.id} className="relative flex flex-col items-center">
-                  {/* Card on TOP */}
+                <div key={m.id} className="relative flex flex-col items-center justify-center">
+                  {/* Card on TOP - Positioned with ample clearance above the node */}
                   {isTop && (
-                    <div className="absolute bottom-8 mb-4 flex flex-col items-center">
+                    <div className="absolute bottom-[36px] flex flex-col items-center">
                       <MilestoneCard
                         milestone={m}
                         statusInfo={statusInfo}
@@ -155,7 +161,7 @@ export const TimelineBoard: React.FC = () => {
                       />
                       {/* Stem connector */}
                       <div
-                        className="w-0.5 h-6 transition-colors"
+                        className="w-0.5 h-8 transition-colors"
                         style={{ backgroundColor: m.color }}
                       />
                     </div>
@@ -166,10 +172,10 @@ export const TimelineBoard: React.FC = () => {
                     whileHover={{ scale: 1.35 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedMilestone(m)}
-                    className="relative group focus:outline-none"
+                    className="relative group focus:outline-none z-20 my-auto"
                     aria-label={m.title}
                   >
-                    {/* Professional glowing radar pulse ONLY for the active priority target */}
+                    {/* Professional glowing radar pulse for the active priority target */}
                     {isUrgent && (
                       <span
                         className="absolute -inset-2.5 rounded-full animate-ping opacity-60"
@@ -194,12 +200,12 @@ export const TimelineBoard: React.FC = () => {
                     </div>
                   </motion.button>
 
-                  {/* Card on BOTTOM */}
+                  {/* Card on BOTTOM - Positioned with ample clearance below the node */}
                   {!isTop && (
-                    <div className="absolute top-8 mt-4 flex flex-col items-center">
+                    <div className="absolute top-[36px] flex flex-col items-center">
                       {/* Stem connector */}
                       <div
-                        className="w-0.5 h-6 transition-colors"
+                        className="w-0.5 h-8 transition-colors"
                         style={{ backgroundColor: m.color }}
                       />
                       <MilestoneCard
@@ -221,8 +227,8 @@ export const TimelineBoard: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="w-full max-w-4xl mx-auto px-4 mb-10"
+        transition={{ delay: 0.3 }}
+        className="w-full max-w-4xl mx-auto px-4 mt-6 mb-12"
       >
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-500/30 p-5 shadow-2xl text-center text-white">
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -310,7 +316,7 @@ export const TimelineBoard: React.FC = () => {
       />
 
       {/* Bottom Footer Ribbon matching graphic */}
-      <footer className="w-full border-t border-slate-200 dark:border-slate-800/80 py-4 px-6 bg-slate-50 dark:bg-slate-950 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-2">
+      <footer className="w-full mt-auto border-t border-slate-200 dark:border-slate-800/80 py-4 px-6 bg-slate-50 dark:bg-slate-950 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-2">
         <div className="font-mono tracking-wider">
           <span className="font-bold text-indigo-500">IT4010</span> Research Project
         </div>
