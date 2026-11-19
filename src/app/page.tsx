@@ -3,9 +3,9 @@ import { HexagonBackground } from '@/components/HexagonBackground';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-amber-400 selection:text-black relative overflow-x-hidden">
-      {/* Animated Light Honeycomb Breathing Backdrop */}
-      <HexagonBackground />
+    <main className="min-h-screen bg-[#0f0e0c] text-neutral-100 selection:bg-yellow-400 selection:text-black relative overflow-x-hidden">
+      {/* Animated Hexagonal Breathing Backdrop */}
+      <HexagonBackground theme="bumblebee" />
       {/* Foreground Content */}
       <div className="relative z-10">
         <TimelineBoard />

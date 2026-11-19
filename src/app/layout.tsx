@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "The 2027 RP Journey at a Glance | IT4010 Research Project",
-  description: "Executive timeline and milestone tracker for the 2027 Research Project journey.",
+  description: "Interactive Bumblebee-themed timeline and milestone tracker for the 2027 Research Project journey.",
 };
 
 export default function RootLayout({
@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#f8fafc] text-slate-800">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#0f0e0c] text-neutral-100">{children}</body>
     </html>
   );
 }

@@ -4,10 +4,12 @@ import React, { useEffect, useRef } from 'react';
 
 interface HexagonCanvasProps {
   className?: string;
+  theme?: 'bumblebee' | 'cyan';
 }
 
 export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
   className = '',
+  theme = 'bumblebee',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -28,7 +30,7 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
     };
     window.addEventListener('resize', handleResize);
 
-    // Geometric parameters
+    // Hexagon geometric parameters
     const size = 36;
     const hexHeight = Math.sqrt(3) * size;
     const horizDist = (3 / 2) * size;
@@ -54,10 +56,11 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
         hexCells.push({
           x,
           y,
-          baseAlpha: 0.08 + Math.random() * 0.1,
-          pulseSpeed: 0.5 + Math.random() * 0.8,
+          // Subtle, elegant alpha so it's not overpowering
+          baseAlpha: 0.05 + Math.random() * 0.08,
+          pulseSpeed: 0.6 + Math.random() * 0.9,
           phase: Math.random() * Math.PI * 2,
-          isAccent: Math.random() > 0.68,
+          isAccent: Math.random() > 0.72,
         });
       }
     }
@@ -88,18 +91,18 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
       const elapsed = (time - startTime) / 1000;
       ctx.clearRect(0, 0, width, height);
 
-      // Clean, bright executive slate canvas background
+      // Sophisticated Lighter Obsidian Slate Gradient (Dark Charcoal / Graphite instead of pitch black)
       const bgGrad = ctx.createRadialGradient(
         width / 2,
-        height * 0.25,
-        100,
+        height * 0.35,
+        80,
         width / 2,
         height / 2,
-        Math.max(width, height) * 0.9
+        Math.max(width, height) * 0.85
       );
-      bgGrad.addColorStop(0, '#fdfbf7'); // soft warm alabaster
-      bgGrad.addColorStop(0.5, '#f8fafc'); // crisp bright slate
-      bgGrad.addColorStop(1, '#f1f5f9'); // modern pearl slate
+      bgGrad.addColorStop(0, '#1c1b17'); // Soft warm graphite charcoal
+      bgGrad.addColorStop(0.5, '#121210'); // Deep charcoal
+      bgGrad.addColorStop(1, '#0c0c0a'); // Dark slate carbon
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
@@ -109,16 +112,16 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
         const normalizedBreath = (breathing + 1) / 2;
 
         const currentAlpha = cell.isAccent
-          ? cell.baseAlpha + normalizedBreath * 0.28
-          : cell.baseAlpha + normalizedBreath * 0.08;
+          ? cell.baseAlpha + normalizedBreath * 0.35
+          : cell.baseAlpha + normalizedBreath * 0.12;
 
-        // Elegant amber/gold honeycomb lines over light background
-        ctx.strokeStyle = `rgba(217, 119, 6, ${currentAlpha})`; // Amber 600
-        ctx.lineWidth = cell.isAccent ? 1.4 : 0.75;
+        const strokeColor = `rgba(250, 204, 21, ${currentAlpha})`;
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = cell.isAccent ? 1.4 : 0.8;
 
         if (cell.isAccent && normalizedBreath > 0.5) {
-          ctx.shadowColor = 'rgba(245, 158, 11, 0.4)';
-          ctx.shadowBlur = 6 * normalizedBreath;
+          ctx.shadowColor = 'rgba(234, 179, 8, 0.45)';
+          ctx.shadowBlur = 8 * normalizedBreath;
         } else {
           ctx.shadowBlur = 0;
         }
@@ -126,9 +129,9 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
         drawHexagon(ctx, cell.x, cell.y, size - 2);
         ctx.stroke();
 
-        // Delicate warm golden glow inside accented breathing cells
-        if (cell.isAccent && normalizedBreath > 0.6) {
-          ctx.fillStyle = `rgba(251, 191, 36, ${0.06 * normalizedBreath})`;
+        // Very delicate fill for breathing active cells
+        if (cell.isAccent && normalizedBreath > 0.65) {
+          ctx.fillStyle = `rgba(250, 204, 21, ${0.03 * normalizedBreath})`;
           ctx.fill();
         }
       }
@@ -142,7 +145,7 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas
