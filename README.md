@@ -15,6 +15,12 @@
   <i>"Start before January — the strongest teams do not wait for the semester to begin."</i>
 </p>
 
+<br />
+
+<p align="center">
+  <img src="./public/preview.png" alt="2027 RP Journey Tracker Preview" width="850" style="border-radius: 14px; box-shadow: 0 10px 40px -10px rgba(250, 204, 21, 0.25); border: 1px solid rgba(250, 204, 21, 0.3);" />
+</p>
+
 </div>
 
 ---
