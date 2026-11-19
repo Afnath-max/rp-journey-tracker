@@ -1,27 +1,25 @@
-<div align="center">
-
 # ⚡ 2027 Research Project (IT4010) Journey Tracker
 
-**An executive, interactive milestone tracking engine and chronological roadmap designed for final-year computing research teams.**
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Afnath-max/rp-journey-tracker/afn-1/public/preview.png" alt="2027 RP Journey Tracker Preview" width="100%" />
+</p>
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.3-blue?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.3-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
-[![CI Status](https://img.shields.io/github/actions/workflow/status/Afnath-max/rp-journey-tracker/ci.yml?branch=main&style=for-the-badge&label=CI%20Build)](https://github.com/Afnath-max/rp-journey-tracker/actions)
+<p align="center">
+  <strong>An executive, interactive milestone tracking engine and chronological roadmap for final-year computing research teams.</strong>
+</p>
+
+<p align="center">
+  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-16.4-black?style=flat-square&logo=next.js&logoColor=white" alt="Next.js" /></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19.3-20232a?style=flat-square&logo=react&logoColor=61DAFB" alt="React" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-4.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://github.com/Afnath-max/rp-journey-tracker/actions"><img src="https://img.shields.io/github/actions/workflow/status/Afnath-max/rp-journey-tracker/ci.yml?branch=main&style=flat-square&label=CI%20Build" alt="CI" /></a>
+  <a href="https://rp-journey-tracker.vercel.app"><img src="https://img.shields.io/badge/Vercel-Production-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel" /></a>
+</p>
 
 <p align="center">
   <i>"Start before January — the strongest teams do not wait for the semester to begin."</i>
 </p>
-
-<br />
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Afnath-max/rp-journey-tracker/afn-1/public/preview.png" alt="2027 RP Journey Tracker Preview" width="100%" style="border-radius: 12px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); border: 1px solid rgba(250, 204, 21, 0.35); max-width: 900px;" />
-</p>
-
-</div>
 
 ---
 
@@ -29,7 +27,9 @@
 
 The **RP Journey Tracker** transforms traditional academic roadmap handouts into a reactive, high-contrast, interactive web application. It guides students and researchers through the entire lifecycle of the **IT4010 Research Project** (Faculty of Computing)—from initial topic awareness and supervisor confirmation to proposal presentation viva and mid-year progress defense.
 
-### 🌟 Key Highlights
+---
+
+## 🌟 Key Features
 
 * **🕒 Real-Time Dynamic Deadlines:** Compares today's calendar date against official university cutoff dates, auto-calculating exact remaining days (`21d Left`, `Due Today`, `Overdue`).
 * **📡 Priority Radar Signal:** Autonomous pulse animation that highlights the current nearest incomplete target until marked as done.
@@ -56,61 +56,50 @@ The **RP Journey Tracker** transforms traditional academic roadmap handouts into
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## 🛠️ Tech Stack & Architecture
 
-* **Framework:** [Next.js](https://nextjs.org/) (App Router, Turbopack)
-* **Language:** [TypeScript](https://www.typescriptlang.org/) (Strict type-checking)
+* **Framework:** [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+* **Language:** [TypeScript 5](https://www.typescriptlang.org/)
 * **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-* **Animation & Interactivity:** [Framer Motion](https://www.framer.com/motion/) & [Canvas-Confetti](https://www.npmjs.com/package/canvas-confetti)
+* **Animation & Motion:** [Framer Motion](https://www.framer.com/motion/) & [Canvas-Confetti](https://www.npmjs.com/package/canvas-confetti)
 * **Icons:** [Lucide React](https://lucide.dev/)
-* **Background VFX:** Custom HTML5 Canvas Honeycomb Matrix with sinusoidal breathing pulse algorithms
-* **CI/CD & Security:** GitHub Actions (`ci.yml`), CodeQL Static Code Analysis & Dependabot
+* **Visual Effects:** HTML5 Canvas Honeycomb Matrix with sinusoidal breathing algorithms
+* **Deployment & CI:** Vercel Global Edge & GitHub Actions CI
 
 ---
 
 ## 🚀 Getting Started Locally
 
 ### Prerequisites
-* **Node.js:** `v20.x` or later (tested up to `v26.x`)
+* **Node.js:** `v20.x` or later
 * **npm:** `v10.x` or later
 
 ### Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Afnath-max/rp-journey-tracker.git
-   cd rp-journey-tracker
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the local development server:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Open in browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-### Production Build
 ```bash
-npm run build
-npm run start
+# Clone the repository
+git clone https://github.com/Afnath-max/rp-journey-tracker.git
+cd rp-journey-tracker
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 📁 Repository Structure
+## 📁 Project Structure
 
 ```text
 rp-journey-tracker/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml             # Automated CI build & verification workflow
-├── public/                    # Static assets & favicons
+├── public/                    # Static assets & showcase banners
 ├── src/
 │   ├── app/
 │   │   ├── globals.css        # Tailwind CSS imports & theme definitions
@@ -132,13 +121,12 @@ rp-journey-tracker/
 
 ## 🔒 Security & Branch Governance
 
-This repository adheres to enterprise branch protection standards:
-* **Default Branch Protection:** Direct pushes and force pushes (`git push --force`) to `main` are strictly rejected by server-side rulesets.
-* **Pull Request Workflow:** All changes originate on feature branches (`afn-*` / `dev`) and must pass build validation before merging.
-* **Automated Code Quality:** CodeQL static application security testing (SAST) and automated secret push detection are permanently active.
+* **Branch Rulesets:** Direct pushes and force pushes (`git push --force`) to `main` are strictly blocked.
+* **Pull Request Workflow:** All changes must originate on feature branches (`afn-*`, `dev`) and pass CI checks before merging.
+* **Automated Scanners:** CodeQL Static Security Testing and Push Protection for secrets are permanently active.
 
 ---
 
 ## 📄 License
 
-This project is open-source and intended for academic research tracking and educational guidance.
+This project is created for academic research tracking and educational guidance for the IT4010 Research Project.
