@@ -7,13 +7,11 @@ import { MilestoneModal } from './MilestoneModal';
 import {
   Target,
   CheckCircle,
-  Award,
   Calendar,
   Clock,
   AlertTriangle,
   ChevronRight,
   ArrowDown,
-  Sparkles,
   Zap
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -22,8 +20,10 @@ export const TimelineBoard: React.FC = () => {
   const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null);
   const [completedMilestones, setCompletedMilestones] = useState<string[]>([]);
   const [currentTimestamp, setCurrentTimestamp] = useState<number | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     setCurrentTimestamp(Date.now());
     const saved = localStorage.getItem('rp_completed_milestones');
     if (saved) {
@@ -149,8 +149,11 @@ export const TimelineBoard: React.FC = () => {
             </div>
           </div>
           <div className="text-right text-xs font-medium text-neutral-400 border-l border-neutral-800 pl-4">
-            <span className="text-yellow-400 font-bold text-sm">{completedMilestones.length}</span> / {MILESTONES.length}
-            <div>Completed</div>
+            <span className="text-yellow-400 font-bold text-sm">
+              {isClient ? completedMilestones.length : 0}
+            </span>{' '}
+            / {MILESTONES.length}
+            <div>{isClient && completedMilestones.length === MILESTONES.length ? 'Completed' : 'Done'}</div>
           </div>
         </div>
 
