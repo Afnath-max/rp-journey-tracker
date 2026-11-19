@@ -30,10 +30,9 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
     };
     window.addEventListener('resize', handleResize);
 
-    // Hexagon math parameters
-    const size = 38; // Radius of each hexagon
+    // Hexagon geometric parameters
+    const size = 36;
     const hexHeight = Math.sqrt(3) * size;
-    const hexWidth = 2 * size;
     const horizDist = (3 / 2) * size;
     const vertDist = hexHeight;
 
@@ -43,7 +42,7 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
       baseAlpha: number;
       pulseSpeed: number;
       phase: number;
-      glowIntensity: number;
+      isAccent: boolean;
     }
 
     const hexCells: HexCell[] = [];
@@ -57,10 +56,11 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
         hexCells.push({
           x,
           y,
-          baseAlpha: 0.12 + Math.random() * 0.15,
-          pulseSpeed: 0.8 + Math.random() * 1.4,
+          // Subtle, elegant alpha so it's not overpowering
+          baseAlpha: 0.05 + Math.random() * 0.08,
+          pulseSpeed: 0.6 + Math.random() * 0.9,
           phase: Math.random() * Math.PI * 2,
-          glowIntensity: Math.random() > 0.65 ? 1 : 0.2,
+          isAccent: Math.random() > 0.72,
         });
       }
     }
@@ -91,47 +91,37 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
       const elapsed = (time - startTime) / 1000;
       ctx.clearRect(0, 0, width, height);
 
-      // Deep dark futuristic background fill
+      // Sophisticated Lighter Obsidian Slate Gradient (Dark Charcoal / Graphite instead of pitch black)
       const bgGrad = ctx.createRadialGradient(
         width / 2,
-        height * 0.4,
-        50,
+        height * 0.35,
+        80,
         width / 2,
         height / 2,
-        Math.max(width, height) * 0.8
+        Math.max(width, height) * 0.85
       );
-      bgGrad.addColorStop(0, '#090804');
-      bgGrad.addColorStop(0.5, '#040402');
-      bgGrad.addColorStop(1, '#000000');
+      bgGrad.addColorStop(0, '#1c1b17'); // Soft warm graphite charcoal
+      bgGrad.addColorStop(0.5, '#121210'); // Deep charcoal
+      bgGrad.addColorStop(1, '#0c0c0a'); // Dark slate carbon
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
       for (let i = 0; i < hexCells.length; i++) {
         const cell = hexCells[i];
-        // Breathing organic sinusoidal wave
         const breathing = Math.sin(elapsed * cell.pulseSpeed + cell.phase);
-        // Normalize breathing to 0..1
         const normalizedBreath = (breathing + 1) / 2;
 
-        const currentAlpha =
-          cell.baseAlpha + normalizedBreath * 0.55 * cell.glowIntensity;
+        const currentAlpha = cell.isAccent
+          ? cell.baseAlpha + normalizedBreath * 0.35
+          : cell.baseAlpha + normalizedBreath * 0.12;
 
-        // Colors tailored to Bumblebee honeycomb aesthetic
-        const strokeColor =
-          theme === 'bumblebee'
-            ? `rgba(250, 204, 21, ${currentAlpha})` // vibrant yellow
-            : `rgba(56, 189, 248, ${currentAlpha})`; // cyan alternative
-
+        const strokeColor = `rgba(250, 204, 21, ${currentAlpha})`;
         ctx.strokeStyle = strokeColor;
-        ctx.lineWidth = cell.glowIntensity > 0.8 ? 1.8 : 1.0;
+        ctx.lineWidth = cell.isAccent ? 1.4 : 0.8;
 
-        // Subtle soft inner cell illumination on peak breathe
-        if (cell.glowIntensity > 0.8 && normalizedBreath > 0.4) {
-          ctx.shadowColor =
-            theme === 'bumblebee'
-              ? 'rgba(234, 179, 8, 0.65)'
-              : 'rgba(56, 189, 248, 0.65)';
-          ctx.shadowBlur = 10 * normalizedBreath;
+        if (cell.isAccent && normalizedBreath > 0.5) {
+          ctx.shadowColor = 'rgba(234, 179, 8, 0.45)';
+          ctx.shadowBlur = 8 * normalizedBreath;
         } else {
           ctx.shadowBlur = 0;
         }
@@ -139,12 +129,9 @@ export const HexagonBackground: React.FC<HexagonCanvasProps> = ({
         drawHexagon(ctx, cell.x, cell.y, size - 2);
         ctx.stroke();
 
-        // Optional slight fill for active honeycombs
-        if (cell.glowIntensity > 0.8 && normalizedBreath > 0.6) {
-          ctx.fillStyle =
-            theme === 'bumblebee'
-              ? `rgba(234, 179, 8, ${0.04 * normalizedBreath})`
-              : `rgba(56, 189, 248, ${0.04 * normalizedBreath})`;
+        // Very delicate fill for breathing active cells
+        if (cell.isAccent && normalizedBreath > 0.65) {
+          ctx.fillStyle = `rgba(250, 204, 21, ${0.03 * normalizedBreath})`;
           ctx.fill();
         }
       }
