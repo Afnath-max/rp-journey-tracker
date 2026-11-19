@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Milestone } from '@/data/timelineData';
-import { X, Calendar, CheckCircle2, AlertCircle, Lightbulb, ExternalLink } from 'lucide-react';
+import { X, CheckCircle2, Lightbulb } from 'lucide-react';
 
 interface MilestoneModalProps {
   milestone: Milestone | null;
@@ -29,41 +29,38 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/85 backdrop-blur-md"
         />
 
-        {/* Modal Window */}
+        {/* Bumblebee Modal Window */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl p-6 text-slate-100"
+          className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-neutral-950 border-2 border-yellow-500/40 rounded-2xl shadow-[0_0_50px_-10px_rgba(234,179,8,0.25)] p-6 text-neutral-100"
         >
           {/* Header */}
-          <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-800">
+          <div className="flex items-start justify-between gap-4 pb-4 border-b border-neutral-800">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span
-                  className="px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider rounded-md border"
-                  style={{ borderColor: milestone.color, color: milestone.color }}
-                >
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="px-2.5 py-0.5 text-xs font-black uppercase tracking-wider rounded-md border border-yellow-500/50 bg-yellow-500/10 text-yellow-400 font-mono">
                   {milestone.date}
                 </span>
                 {milestone.annotation && (
-                  <span className="text-xs bg-slate-800 text-amber-300 font-medium px-2 py-0.5 rounded-full border border-amber-500/20">
+                  <span className="text-xs bg-yellow-950/40 text-yellow-300 font-medium px-2 py-0.5 rounded-full border border-yellow-500/30">
                     ✍️ {milestone.annotation}
                   </span>
                 )}
               </div>
-              <h3 className="text-2xl font-bold text-white tracking-tight">
+              <h3 className="text-2xl font-black text-yellow-400 tracking-tight">
                 {milestone.title}
               </h3>
             </div>
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-neutral-400 hover:text-yellow-400 hover:bg-neutral-900 border border-transparent hover:border-yellow-500/30 transition-all"
               aria-label="Close modal"
             >
               <X size={20} />
@@ -71,23 +68,23 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
           </div>
 
           {/* Description */}
-          <div className="my-4 text-slate-300 leading-relaxed text-sm bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
+          <div className="my-4 text-neutral-300 leading-relaxed text-sm bg-neutral-900/80 p-3.5 rounded-xl border border-neutral-800">
             {milestone.shortDescription}
           </div>
 
           {/* Key Deliverables & Requirements */}
           <div className="space-y-3 mb-6">
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <CheckCircle2 size={16} className="text-emerald-400" />
+            <h4 className="text-xs font-bold uppercase tracking-wider text-yellow-400 flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-yellow-400" />
               Key Deliverables & Action Items
             </h4>
             <ul className="space-y-2">
               {milestone.detailedRequirements.map((req, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-2.5 text-sm text-slate-200 bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/40"
+                  className="flex items-start gap-2.5 text-sm text-neutral-200 bg-neutral-900/60 p-2.5 rounded-lg border border-neutral-800/80"
                 >
-                  <span className="mt-1 h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: milestone.color }} />
+                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full shrink-0 bg-yellow-400" />
                   <span>{req}</span>
                 </li>
               ))}
@@ -97,15 +94,15 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
           {/* Tips for High Scoring */}
           {milestone.tips && milestone.tips.length > 0 && (
             <div className="space-y-3 mb-6">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-                <Lightbulb size={16} />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-yellow-300 flex items-center gap-2">
+                <Lightbulb size={16} className="text-yellow-400" />
                 Pro-Tips & Evaluator Insights
               </h4>
               <div className="space-y-2">
                 {milestone.tips.map((tip, i) => (
                   <div
                     key={i}
-                    className="text-xs leading-relaxed text-amber-200/90 bg-amber-950/20 border border-amber-800/40 rounded-lg p-2.5"
+                    className="text-xs leading-relaxed text-yellow-200/90 bg-yellow-950/20 border border-yellow-500/30 rounded-lg p-2.5"
                   >
                     💡 {tip}
                   </div>
@@ -115,22 +112,22 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
           )}
 
           {/* Actions Footer */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-between pt-4 border-t border-neutral-800">
             <button
               onClick={() => onToggleComplete(milestone.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
                 isCompleted
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/30'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
+                  ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/30'
+                  : 'bg-neutral-900 hover:bg-neutral-800 text-neutral-200 border border-neutral-700 hover:border-yellow-500/50'
               }`}
             >
-              <CheckCircle2 size={17} className={isCompleted ? 'text-white' : 'text-slate-400'} />
+              <CheckCircle2 size={17} className={isCompleted ? 'text-black' : 'text-neutral-400'} />
               {isCompleted ? 'Completed' : 'Mark as Done'}
             </button>
 
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md shadow-indigo-600/30"
+              className="px-5 py-2 rounded-xl text-sm font-bold bg-yellow-400 hover:bg-yellow-300 text-black transition-all shadow-md shadow-yellow-400/20"
             >
               Close
             </button>

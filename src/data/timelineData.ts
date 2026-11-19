@@ -14,15 +14,14 @@ export interface Milestone {
   category: MilestoneCategory;
   position: 'top' | 'bottom';
   color: string;
-  badgeBg: string;
-  dotColor: string;
   shortDescription: string;
   detailedRequirements: string[];
   tips: string[];
-  isoDate: string; // End deadline: YYYY-MM-DD
+  isoDate: string; // YYYY-MM-DD
   annotation?: string;
 }
 
+// Professional Bumblebee Palette (Deep Carbon/Onyx base + Vibrant Electric Amber/Yellow & Gold Accents)
 export const MILESTONES: Milestone[] = [
   {
     id: 'm1',
@@ -30,9 +29,7 @@ export const MILESTONES: Milestone[] = [
     title: 'RP Awareness Session',
     category: 'awareness',
     position: 'top',
-    color: '#8b5cf6', // purple
-    badgeBg: 'bg-purple-500/10 border-purple-500/30 text-purple-600 dark:text-purple-300',
-    dotColor: 'bg-purple-600',
+    color: '#eab308', // pure bumblebee yellow
     shortDescription: 'Introductory orientation on research project scope, faculty expectations, and team requirements.',
     detailedRequirements: [
       'Understand project guidelines and marking schemes (IT4010 Research Project).',
@@ -52,9 +49,7 @@ export const MILESTONES: Milestone[] = [
     title: 'Design Thinking Workshop',
     category: 'workshop',
     position: 'bottom',
-    color: '#0d9488', // teal
-    badgeBg: 'bg-teal-500/10 border-teal-500/30 text-teal-600 dark:text-teal-300',
-    dotColor: 'bg-teal-600',
+    color: '#facc15', // bright yellow
     shortDescription: 'Hands-on workshops to identify problem spaces, empathy mapping, and user need validation.',
     detailedRequirements: [
       'Attend both Workshop Sessions (11 Oct & 18 Oct).',
@@ -74,9 +69,7 @@ export const MILESTONES: Milestone[] = [
     title: 'Supervisor Confirmation',
     category: 'supervisor',
     position: 'top',
-    color: '#f59e0b', // amber
-    badgeBg: 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-300',
-    dotColor: 'bg-amber-500',
+    color: '#fbbf24', // golden yellow
     shortDescription: 'Formal agreement and sign-off from an academic supervisor and co-supervisor.',
     detailedRequirements: [
       'Pitch research topic and novelty slides to potential faculty supervisors.',
@@ -96,9 +89,7 @@ export const MILESTONES: Milestone[] = [
     title: 'TAF Submission',
     category: 'taf',
     position: 'bottom',
-    color: '#f43f5e', // rose / red
-    badgeBg: 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-300',
-    dotColor: 'bg-rose-600',
+    color: '#f59e0b', // deep amber bee stripe
     shortDescription: 'Topic Assessment Form (TAF) formal document submission to the department committee.',
     detailedRequirements: [
       'Finalize Title, Objectives, Problem Statement, and Proposed Methodology.',
@@ -118,9 +109,7 @@ export const MILESTONES: Milestone[] = [
     title: 'TAF Evaluation',
     category: 'taf',
     position: 'top',
-    color: '#0284c7', // sky blue
-    badgeBg: 'bg-sky-500/10 border-sky-500/30 text-sky-600 dark:text-sky-300',
-    dotColor: 'bg-sky-600',
+    color: '#fde047', // vivid yellow
     shortDescription: 'Review and oral defense/screening of the submitted TAF with the evaluation panel.',
     detailedRequirements: [
       'Defend research novelty, feasibility, and technical depth before faculty panel.',
@@ -140,9 +129,7 @@ export const MILESTONES: Milestone[] = [
     title: 'Project Charter',
     category: 'charter',
     position: 'bottom',
-    color: '#10b981', // emerald
-    badgeBg: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-300',
-    dotColor: 'bg-emerald-500',
+    color: '#eab308', // metallic gold yellow
     shortDescription: 'Comprehensive contractual charter outlining scope, milestones, Gantt chart, and risk plan.',
     detailedRequirements: [
       'Complete SLIIT IT4010 Project Charter document.',
@@ -162,9 +149,7 @@ export const MILESTONES: Milestone[] = [
     title: 'Proposal Presentation',
     category: 'proposal',
     position: 'top',
-    color: '#7c3aed', // violet
-    badgeBg: 'bg-violet-500/10 border-violet-500/30 text-violet-600 dark:text-violet-300',
-    dotColor: 'bg-violet-600',
+    color: '#facc15', // honey yellow
     shortDescription: 'Formal mid-term proposal viva and presentation evaluated by examiner panel.',
     detailedRequirements: [
       'Comprehensive 15-20 min presentation detailing problem, literature review, and architecture.',
@@ -184,9 +169,7 @@ export const MILESTONES: Milestone[] = [
     title: 'Proposal Report',
     category: 'proposal',
     position: 'bottom',
-    color: '#f97316', // orange
-    badgeBg: 'bg-orange-500/10 border-orange-500/30 text-orange-600 dark:text-orange-300',
-    dotColor: 'bg-orange-500',
+    color: '#fbbf24', // warm gold
     shortDescription: 'Submission of the thorough Research Proposal documentation with IEEE citations.',
     detailedRequirements: [
       'Submit individual and group chapters following IEEE standard formatting.',
@@ -206,9 +189,7 @@ export const MILESTONES: Milestone[] = [
     title: 'Progress Presentation 1',
     category: 'progress',
     position: 'top',
-    color: '#06b6d4', // cyan
-    badgeBg: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-600 dark:text-cyan-300',
-    dotColor: 'bg-cyan-600',
+    color: '#fef08a', // bright electric yellow
     shortDescription: 'First core milestone presentation showcasing 40-50% actual implementation & findings.',
     detailedRequirements: [
       'Demonstrate working code / core models / functional components.',
