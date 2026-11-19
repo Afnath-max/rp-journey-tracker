@@ -70,7 +70,7 @@ export const MILESTONES: Milestone[] = [
   },
   {
     id: 'm3',
-    date: '30 Oct 2026',
+    date: '20 Nov 2026',
     title: 'Supervisor Confirmation',
     category: 'supervisor',
     position: 'top',
@@ -87,7 +87,7 @@ export const MILESTONES: Milestone[] = [
       'Reach out early with a 1-page proposal summary and recent paper references.',
       'Popular supervisors get booked out quickly!'
     ],
-    isoDate: '2026-10-30',
+    isoDate: '2026-11-20',
     annotation: 'Crucial: 4 members lock-in'
   },
   {
