@@ -1,11 +1,22 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MILESTONES, Milestone, getMilestoneStatus } from '@/data/timelineData';
-import { MilestoneCard } from './MilestoneCard';
 import { MilestoneModal } from './MilestoneModal';
-import { Target, CheckCircle, Award, MoveHorizontal } from 'lucide-react';
+import {
+  Target,
+  CheckCircle,
+  Award,
+  Calendar,
+  Clock,
+  AlertTriangle,
+  ChevronRight,
+  ArrowDown,
+  Sparkles,
+  LayoutList,
+  Columns
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const TimelineBoard: React.FC = () => {
@@ -61,13 +72,13 @@ export const TimelineBoard: React.FC = () => {
   const progressPercent = Math.round((completedMilestones.length / MILESTONES.length) * 100);
 
   return (
-    <div className="w-full flex flex-col items-center min-h-screen">
-      {/* Top Banner (Header section matching the original image) */}
-      <header className="w-full text-center max-w-5xl mx-auto px-4 pt-8 pb-3">
+    <div className="w-full flex flex-col items-center min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+      {/* Top Banner Header */}
+      <header className="w-full max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2.5"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3"
         >
           <Award size={14} />
           IT4010 Research Project • Faculty of Computing
@@ -77,169 +88,36 @@ export const TimelineBoard: React.FC = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white"
+          className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white"
         >
-          The <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent">2027 RP journey</span> at a glance
+          The <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent">2027 RP journey</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-300 font-medium"
+          className="mt-2 text-base sm:text-lg text-slate-600 dark:text-slate-300 font-medium max-w-2xl mx-auto"
         >
-          Start before January —{' '}
-          <span className="font-bold text-slate-900 dark:text-amber-300">
-            the strongest teams do not wait for the semester to begin.
-          </span>
+          Chronological Roadmap from <span className="text-purple-600 dark:text-purple-400 font-semibold">Inception</span> to{' '}
+          <span className="text-cyan-600 dark:text-cyan-400 font-semibold">Progress Defense</span>
         </motion.p>
 
-        {/* Progress Bar & Quick Stats */}
-        <div className="mt-4 max-w-md mx-auto bg-slate-100 dark:bg-slate-900/80 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-          <div className="flex-1 text-left">
-            <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">
-              <span>Overall RP Progress</span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-bold">{progressPercent}%</span>
-            </div>
-            <div className="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercent}%` }}
-                className="h-full bg-gradient-to-r from-indigo-500 to-emerald-400 rounded-full"
-              />
-            </div>
-          </div>
-          <div className="text-right text-xs font-medium text-slate-500 dark:text-slate-400 border-l border-slate-200 dark:border-slate-800 pl-3">
-            <span className="text-slate-900 dark:text-white font-bold">{completedMilestones.length}</span> / {MILESTONES.length}
-            <div>Done</div>
-          </div>
-        </div>
-
-        {/* Scroll hint on desktop */}
-        <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
-          <MoveHorizontal size={14} />
-          <span>Scroll horizontally to view the full journey</span>
-        </div>
-      </header>
-
-      {/* Main Timeline Section (Desktop Horizontal + Generous Top/Bottom Padding so cards are NEVER clipped) */}
-      <section className="w-full px-4 sm:px-8 overflow-x-auto overflow-y-visible py-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-        <div className="min-w-[1500px] max-w-[1700px] mx-auto relative h-[560px] flex items-center justify-center">
-          {/* Main Central Timeline Axis */}
-          <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1.5 bg-slate-200 dark:bg-slate-700/80 z-0 rounded-full">
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
-              className="h-full bg-gradient-to-r from-purple-500 via-sky-500 via-emerald-500 to-cyan-500 origin-left"
-            />
-          </div>
-
-          {/* Timeline Nodes Grid */}
-          <div className="relative z-10 w-full grid grid-cols-9 gap-4 items-center">
-            {MILESTONES.map((m, idx) => {
-              const statusInfo = getMilestoneStatus(
-                m,
-                completedMilestones,
-                nextActiveId,
-                currentTimestamp
-              );
-              const isCompleted = statusInfo.status === 'completed';
-              const isUrgent = statusInfo.status === 'urgent';
-              const isTop = m.position === 'top';
-
-              return (
-                <div key={m.id} className="relative flex flex-col items-center justify-center">
-                  {/* Card on TOP - Positioned with ample clearance above the node */}
-                  {isTop && (
-                    <div className="absolute bottom-[36px] flex flex-col items-center">
-                      <MilestoneCard
-                        milestone={m}
-                        statusInfo={statusInfo}
-                        onSelect={() => setSelectedMilestone(m)}
-                        index={idx}
-                      />
-                      {/* Stem connector */}
-                      <div
-                        className="w-0.5 h-8 transition-colors"
-                        style={{ backgroundColor: m.color }}
-                      />
-                    </div>
-                  )}
-
-                  {/* Node Dot on central line */}
-                  <motion.button
-                    whileHover={{ scale: 1.35 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedMilestone(m)}
-                    className="relative group focus:outline-none z-20 my-auto"
-                    aria-label={m.title}
-                  >
-                    {/* Professional glowing radar pulse for the active priority target */}
-                    {isUrgent && (
-                      <span
-                        className="absolute -inset-2.5 rounded-full animate-ping opacity-60"
-                        style={{ backgroundColor: m.color }}
-                      />
-                    )}
-
-                    <div
-                      className={`h-7 w-7 rounded-full border-4 border-white dark:border-slate-900 flex items-center justify-center transition-all duration-300 shadow-md ${
-                        isCompleted ? 'bg-emerald-500' : ''
-                      }`}
-                      style={{
-                        backgroundColor: isCompleted ? undefined : m.color,
-                        boxShadow: `0 0 16px ${m.color}80`,
-                      }}
-                    >
-                      {isCompleted ? (
-                        <CheckCircle size={14} className="text-white" />
-                      ) : (
-                        <span className="h-2 w-2 rounded-full bg-white" />
-                      )}
-                    </div>
-                  </motion.button>
-
-                  {/* Card on BOTTOM - Positioned with ample clearance below the node */}
-                  {!isTop && (
-                    <div className="absolute top-[36px] flex flex-col items-center">
-                      {/* Stem connector */}
-                      <div
-                        className="w-0.5 h-8 transition-colors"
-                        style={{ backgroundColor: m.color }}
-                      />
-                      <MilestoneCard
-                        milestone={m}
-                        statusInfo={statusInfo}
-                        onSelect={() => setSelectedMilestone(m)}
-                        index={idx}
-                      />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Immediate Target Callout Box */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="w-full max-w-4xl mx-auto px-4 mt-6 mb-12"
-      >
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-500/30 p-5 shadow-2xl text-center text-white">
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <span className="flex items-center justify-center h-8 w-8 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-              <Target size={18} />
+        {/* Dynamic Focus Alert Callout */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="mt-6 rounded-2xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-500/30 p-4 shadow-xl text-center text-white"
+        >
+          <div className="flex items-center justify-center gap-2.5">
+            <span className="flex items-center justify-center h-7 w-7 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <Target size={16} />
             </span>
-            <p className="text-base sm:text-lg font-bold tracking-wide">
+            <p className="text-sm sm:text-base font-bold tracking-wide">
               {nextActiveMilestone ? (
                 <>
-                  Current Active Focus:{' '}
+                  Next Critical Deadline:{' '}
                   <span className="text-amber-300 font-extrabold underline decoration-amber-400/60 decoration-2 underline-offset-4">
                     {nextActiveMilestone.title} ({nextActiveMilestone.date})
                   </span>
@@ -251,61 +129,203 @@ export const TimelineBoard: React.FC = () => {
               )}
             </p>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* Mobile-Friendly Vertical Timeline fallback */}
-      <div className="w-full max-w-md mx-auto px-4 sm:hidden mb-12">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 text-center mb-6">
-          Vertical List View
-        </h3>
-        <div className="relative pl-6 border-l-2 border-slate-700/60 space-y-6">
-          {MILESTONES.map((m) => {
-            const statusInfo = getMilestoneStatus(
-              m,
-              completedMilestones,
-              nextActiveId,
-              currentTimestamp
-            );
-            const isCompleted = statusInfo.status === 'completed';
-            const isUrgent = statusInfo.status === 'urgent';
-            return (
-              <div key={m.id} className="relative cursor-pointer" onClick={() => setSelectedMilestone(m)}>
-                <span
-                  className="absolute -left-[31px] top-1.5 h-4 w-4 rounded-full border-2 border-slate-900"
-                  style={{ backgroundColor: isCompleted ? '#10b981' : m.color }}
-                />
+        {/* Progress Tracker Card */}
+        <div className="mt-5 bg-white dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md flex items-center gap-4">
+          <div className="flex-1 text-left">
+            <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
+              <span>Overall Milestone Progress</span>
+              <span className="text-indigo-600 dark:text-indigo-400 font-bold">{progressPercent}%</span>
+            </div>
+            <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercent}%` }}
+                className="h-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-400 rounded-full"
+              />
+            </div>
+          </div>
+          <div className="text-right text-xs font-medium text-slate-500 dark:text-slate-400 border-l border-slate-200 dark:border-slate-800 pl-4">
+            <span className="text-slate-900 dark:text-white font-bold text-sm">{completedMilestones.length}</span> / {MILESTONES.length}
+            <div>Completed</div>
+          </div>
+        </div>
+
+        {/* Flow indicator */}
+        <div className="mt-8 flex items-center justify-center gap-2 text-xs font-medium text-slate-400 dark:text-slate-500">
+          <span>Past / Kick-off</span>
+          <ArrowDown size={14} className="animate-bounce" />
+          <span>Future Deliverables</span>
+        </div>
+      </header>
+
+      {/* Vertical Spine Timeline (Past -> Future) */}
+      <main className="w-full max-w-4xl mx-auto px-4 sm:px-6 pb-20 relative">
+        <div className="relative">
+          {/* Central Vertical Connecting Spine Line */}
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-slate-200 dark:bg-slate-800 -translate-x-1/2 rounded-full z-0">
+            {/* Animated filled progress spine */}
+            <motion.div
+              initial={{ height: 0 }}
+              animate={{ height: `${progressPercent}%` }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="w-full bg-gradient-to-b from-purple-500 via-indigo-500 to-emerald-400 rounded-full"
+            />
+          </div>
+
+          {/* Chronological Milestone List */}
+          <div className="space-y-10 sm:space-y-12 relative z-10 pt-4">
+            {MILESTONES.map((m, idx) => {
+              const statusInfo = getMilestoneStatus(
+                m,
+                completedMilestones,
+                nextActiveId,
+                currentTimestamp
+              );
+              const isCompleted = statusInfo.status === 'completed';
+              const isUrgent = statusInfo.status === 'urgent';
+              const isOverdue = statusInfo.status === 'overdue';
+              const isEven = idx % 2 === 0;
+
+              return (
                 <div
-                  className={`p-3 bg-slate-900/90 border rounded-xl ${
-                    isUrgent ? 'border-rose-500/80' : 'border-slate-800'
+                  key={m.id}
+                  className={`flex flex-col md:flex-row items-start md:items-center w-full ${
+                    isEven ? 'md:flex-row-reverse' : ''
                   }`}
                 >
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs font-bold" style={{ color: m.color }}>
-                      {m.date}
-                    </span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded ${
+                  {/* Card Section (Alternates Left / Right on Desktop, Stacked on Mobile) */}
+                  <div
+                    className={`w-full md:w-[calc(50%-44px)] pl-16 md:pl-0 ${
+                      isEven ? 'md:text-left' : 'md:text-left'
+                    }`}
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, x: isEven ? 30 : -30, y: 10 }}
+                      whileInView={{ opacity: 1, x: 0, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ duration: 0.4, delay: 0.05 }}
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => setSelectedMilestone(m)}
+                      className={`group cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-900 shadow-xl border-2 transition-all duration-300 relative ${
                         isCompleted
-                          ? 'text-emerald-400 bg-emerald-500/10'
+                          ? 'border-emerald-500 shadow-emerald-500/10'
                           : isUrgent
-                          ? 'text-rose-400 bg-rose-500/10 font-bold'
-                          : 'text-slate-400 bg-slate-800'
+                          ? 'border-rose-500 shadow-rose-500/20 ring-4 ring-rose-500/10'
+                          : isOverdue
+                          ? 'border-amber-500/80 shadow-amber-500/10'
+                          : 'border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500'
                       }`}
+                      style={{
+                        boxShadow: isUrgent
+                          ? `0 10px 30px -5px ${m.color}40`
+                          : undefined,
+                      }}
                     >
-                      {statusInfo.label}
-                    </span>
+                      {/* Top Badges Row */}
+                      <div className="flex items-center justify-between gap-2 mb-2.5">
+                        <span
+                          className="text-xs font-black uppercase tracking-wider px-2.5 py-1 rounded-lg border font-mono"
+                          style={{
+                            borderColor: `${m.color}60`,
+                            backgroundColor: `${m.color}15`,
+                            color: m.color,
+                          }}
+                        >
+                          {m.date}
+                        </span>
+
+                        {isCompleted ? (
+                          <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                            <CheckCircle size={12} /> Done
+                          </span>
+                        ) : isUrgent ? (
+                          <span className="flex items-center gap-1.5 text-xs font-bold text-rose-500 bg-rose-500/10 border border-rose-500/40 px-2 py-0.5 rounded-full animate-pulse">
+                            <Clock size={12} /> {statusInfo.label}
+                          </span>
+                        ) : isOverdue ? (
+                          <span className="flex items-center gap-1.5 text-xs font-bold text-amber-500 bg-amber-500/10 border border-amber-500/40 px-2 py-0.5 rounded-full">
+                            <AlertTriangle size={12} /> {statusInfo.label}
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
+                            <Calendar size={12} /> {statusInfo.label}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Milestone Title */}
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug">
+                        {m.title}
+                      </h3>
+
+                      {/* Summary description */}
+                      <p className="mt-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                        {m.shortDescription}
+                      </p>
+
+                      {/* Annotation / Hand-written note */}
+                      {m.annotation && (
+                        <div className="mt-3 text-xs font-mono font-medium text-amber-700 dark:text-amber-300/90 bg-amber-50 dark:bg-amber-950/40 border border-amber-300/60 dark:border-amber-800/50 px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+                          <span>✎</span>
+                          <span className="truncate">{m.annotation}</span>
+                        </div>
+                      )}
+
+                      {/* Card Footer action link */}
+                      <div className="mt-3.5 pt-2.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-300 transition-colors">
+                        <span>View Requirements & Tips</span>
+                        <ChevronRight size={14} className="transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </motion.div>
                   </div>
-                  <h4 className="text-sm font-bold text-white">{m.title}</h4>
-                  {m.annotation && (
-                    <p className="text-[11px] text-amber-300 font-mono mt-1">✎ {m.annotation}</p>
-                  )}
+
+                  {/* Central Node Anchor Dot on Spine Line */}
+                  <div className="absolute left-6 md:left-1/2 -translate-x-1/2 flex items-center justify-center">
+                    <motion.button
+                      whileHover={{ scale: 1.3 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setSelectedMilestone(m)}
+                      className="relative focus:outline-none z-20 group"
+                      aria-label={m.title}
+                    >
+                      {/* Active glowing radar pulse */}
+                      {isUrgent && (
+                        <span
+                          className="absolute -inset-3 rounded-full animate-ping opacity-60 pointer-events-none"
+                          style={{ backgroundColor: m.color }}
+                        />
+                      )}
+
+                      <div
+                        className={`h-9 w-9 rounded-full border-4 border-white dark:border-slate-950 flex items-center justify-center transition-all duration-300 shadow-lg ${
+                          isCompleted ? 'bg-emerald-500' : ''
+                        }`}
+                        style={{
+                          backgroundColor: isCompleted ? undefined : m.color,
+                          boxShadow: `0 0 20px ${m.color}90`,
+                        }}
+                      >
+                        {isCompleted ? (
+                          <CheckCircle size={16} className="text-white" />
+                        ) : (
+                          <span className="text-white font-mono text-[11px] font-bold">
+                            {idx + 1}
+                          </span>
+                        )}
+                      </div>
+                    </motion.button>
+                  </div>
+
+                  {/* Empty spacer on opposite side for desktop grid balance */}
+                  <div className="hidden md:block md:w-[calc(50%-44px)]" />
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </main>
 
       {/* Modal Dialog */}
       <MilestoneModal
@@ -315,13 +335,13 @@ export const TimelineBoard: React.FC = () => {
         onToggleComplete={handleToggleComplete}
       />
 
-      {/* Bottom Footer Ribbon matching graphic */}
+      {/* Bottom Footer */}
       <footer className="w-full mt-auto border-t border-slate-200 dark:border-slate-800/80 py-4 px-6 bg-slate-50 dark:bg-slate-950 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-2">
         <div className="font-mono tracking-wider">
           <span className="font-bold text-indigo-500">IT4010</span> Research Project
         </div>
         <div className="font-semibold text-slate-700 dark:text-slate-300">
-          RP 2027 Timeline Tracker
+          RP 2027 Chronological Timeline Tracker
         </div>
         <div>Faculty of Computing</div>
       </footer>
