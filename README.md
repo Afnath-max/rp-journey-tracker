@@ -18,7 +18,7 @@
 <br />
 
 <p align="center">
-  <img src="./public/preview.png" alt="2027 RP Journey Tracker Preview" width="850" style="border-radius: 14px; box-shadow: 0 10px 40px -10px rgba(250, 204, 21, 0.25); border: 1px solid rgba(250, 204, 21, 0.3);" />
+  <img src="https://raw.githubusercontent.com/Afnath-max/rp-journey-tracker/afn-1/public/preview.png" alt="2027 RP Journey Tracker Preview" width="100%" style="border-radius: 12px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); border: 1px solid rgba(250, 204, 21, 0.35); max-width: 900px;" />
 </p>
 
 </div>
